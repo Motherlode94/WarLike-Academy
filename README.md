@@ -1,26 +1,46 @@
 # WarLike Academy
 
-Plateforme de formation WarLike : MVP interactif entièrement dans le navigateur.
+Formation autonome dans le navigateur : https://warlike-academy.pages.dev/.
 
-## Fonctionnalités
+## Édition enrichie — novembre 2026
 
-- Tableau de bord et catalogue de quatre parcours : JavaScript/TypeScript, C# pour WarLike Engine, production musicale WarLike Studio, modélisation 3D.
-- Douze leçons, questions à choix unique corrigées et progression locale par leçon.
-- Interface sombre responsive, navigation accessible et remise à zéro explicite.
+**7 parcours, 21 leçons** :
 
-## Démarrer
+| Parcours | Niveau |
+| --- | --- |
+| JavaScript & TypeScript | Débutant |
+| C# pour WarLike Engine | Débutant |
+| Production dans WarLike Studio | Débutant |
+| Modélisation & Rig 3D | Débutant |
+| Premiers pas dès 5 ans | Découverte avec un accompagnant |
+| Préparer un comportement WarScript | Pratique, pseudocode |
+| Construire son premier projet | Pratique |
 
-Ouvrir `index.html` dans le navigateur ou déployer le dépôt comme site statique sur Cloudflare Pages (build command vide, output directory `/`).
+Les douze leçons initiales et leurs quiz sont conservés et enrichis. Chaque leçon propose une explication, un exemple, une question de connaissance, une mise en pratique distincte, une correction et un petit défi à réaliser. Les deux réponses doivent être justes pour valider une nouvelle leçon. Les validations anciennes sont préservées.
 
-## Limites et production
+- Catalogue avec recherche et filtre par niveau.
+- Choix libre du parcours et des leçons, boutons précédent/suivant et progression visible.
+- Reprise exacte de la dernière leçon depuis le tableau de bord ; reprise d’un parcours à sa première leçon non validée.
+- Export/restauration JSON de la progression et de la position, avec validation et confirmation avant remplacement. Export brut disponible si le stockage est illisible.
+- Conservation de la clé `warlike-academy-demo-v1` et migration des anciennes progressions.
+- Écriture enregistrée avant confirmation de validation ; détection d’une progression modifiée dans un autre onglet pour éviter son écrasement.
 
-Le stockage `localStorage` est local, non partagé entre appareils et non adapté à une certification fiable. Les leçons constituent des introductions de démonstration. Pas d'authentification WarLike Keys, de synchronisation WarLike Server, de sandbox d'exécution de code ni de certificats officiels. Avant production : authentification côté serveur, modèle de données étudiant/cours/inscriptions, suivi signé par l'API, anti-triche et contenu pédagogique étoffé.
+## Exécution et validation
 
-## Vérification manuelle
+Servir la racine par HTTP statique ou Cloudflare Pages, sans compilation. Aucune dépendance distante. `courses.js` contient les cours initiaux ; `enrich-courses.js` les complète ; `model.js` contrôle les progressions et `app.js` affiche le parcours.
 
-1. Ouvrir chaque onglet et tester sur mobile.
-2. Compléter les 3 quiz d'un parcours ; constater 100 % dans Progression.
-3. Actualiser la page ; vérifier la persistance sur le même appareil.
-4. Réinitialiser ; vérifier la disparition des progrès.
+```sh
+node tests/smoke.mjs
+node --check app.js
+node --check model.js
+node --test tests/model.test.mjs
+python3 -m unittest discover -s tests -p 'test_*.py' -v
+```
 
-Les changements initiaux sont proposés dans une PR ; `main` reste inchangée jusqu'à fusion.
+Essais navigateur réalisés : validation des deux questions du parcours dès 5 ans, navigation à la leçon suivante, rechargement et reprise exacte. Imports/exports de fichiers et ergonomie mobile restent à éprouver sur les appareils cibles.
+
+## Périmètre
+
+Suivi personnel local, sans compte Keys ni synchronisation Server. Aucune certification officielle. Les réponses sont disponibles dans la page et les corrections ne sont pas des évaluations sécurisées. Les exemples sont à lire et adapter : **aucun code étudiant n’est exécuté**. Le parcours préparatoire WarScript et les ateliers pour enfants utilisent explicitement du pseudocode, pas une API exécutable du moteur.
+
+Les migrations SQL restent des fondations non appliquées automatiquement. L’authentification, les rôles enseignants, l’édition des cours côté serveur et la synchronisation sont décrits dans [le plan d’intégration](docs/INTEGRATION.md).
