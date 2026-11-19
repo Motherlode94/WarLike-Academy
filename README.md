@@ -44,3 +44,7 @@ Essais navigateur réalisés : validation des deux questions du parcours dès 5 
 Suivi personnel local, sans compte Keys ni synchronisation Server. Aucune certification officielle. Les réponses sont disponibles dans la page et les corrections ne sont pas des évaluations sécurisées. Les exemples sont à lire et adapter : **aucun code étudiant n’est exécuté**. Le parcours préparatoire WarScript et les ateliers pour enfants utilisent explicitement du pseudocode, pas une API exécutable du moteur.
 
 Les migrations SQL restent des fondations non appliquées automatiquement. L’authentification, les rôles enseignants, l’édition des cours côté serveur et la synchronisation sont décrits dans [le plan d’intégration](docs/INTEGRATION.md).
+
+### Navigation depuis la progression
+
+Le bouton indique « Commencer » pour un parcours sans leçon validée, « Continuer » pour un parcours en cours et « Revoir le parcours » une fois terminé. La prochaine leçon est indiquée à côté du bouton, séparé de la barre par une zone d’actions. L’ouverture depuis une carte ramène en haut de la leçon et place le focus sur son titre.
