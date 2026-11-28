@@ -4,7 +4,7 @@ Formation autonome dans le navigateur : https://warlike-academy.pages.dev/.
 
 ## Édition enrichie — novembre 2026
 
-**7 parcours, 21 leçons** :
+**8 parcours, 27 leçons** :
 
 | Parcours | Niveau |
 | --- | --- |
@@ -15,6 +15,7 @@ Formation autonome dans le navigateur : https://warlike-academy.pages.dev/.
 | Premiers pas dès 5 ans | Découverte avec un accompagnant |
 | Préparer un comportement WarScript | Pratique, pseudocode |
 | Construire son premier projet | Pratique |
+| Créer ton premier jeu · Référence Brackeys | Débutant · atelier dans Engine |
 
 Les douze leçons initiales et leurs quiz sont conservés et enrichis. Chaque leçon propose une explication, un exemple, une question de connaissance, une mise en pratique distincte, une correction et un petit défi à réaliser. Les deux réponses doivent être justes pour valider une nouvelle leçon. Les validations anciennes sont préservées.
 
@@ -27,7 +28,7 @@ Les douze leçons initiales et leurs quiz sont conservés et enrichis. Chaque le
 
 ## Exécution et validation
 
-Servir la racine par HTTP statique ou Cloudflare Pages, sans compilation. Aucune dépendance distante. `courses.js` contient les cours initiaux ; `enrich-courses.js` les complète ; `model.js` contrôle les progressions et `app.js` affiche le parcours.
+Servir la racine par HTTP statique ou Cloudflare Pages, sans compilation. Aucune dépendance distante. `courses.js` contient les cours initiaux ; `enrich-courses.js` les complète ; `game-development-course.js` ajoute le parcours pratique de création de jeux ; `model.js` contrôle les progressions et `app.js` affiche le parcours.
 
 ```sh
 node tests/smoke.mjs
@@ -48,3 +49,11 @@ Les migrations SQL restent des fondations non appliquées automatiquement. L’a
 ### Navigation depuis la progression
 
 Le bouton indique « Commencer » pour un parcours sans leçon validée, « Continuer » pour un parcours en cours et « Revoir le parcours » une fois terminé. La prochaine leçon est indiquée à côté du bouton, séparé de la barre par une zone d’actions. L’ouverture depuis une carte ramène en haut de la leçon et place le focus sur son titre.
+
+## Référence pédagogique Brackeys
+
+Les formations de création de jeux s’appuient sur une progression par petits résultats : jouer, observer, modifier une mécanique, vérifier son résultat, puis créer une variante. Les ressources officielles Brackeys sont citées ; les explications françaises et les exercices sont adaptés à WarLike.
+
+Le premier parcours suit la mission native Trois lanternes : lancement, scène, minuteur, collecte, conditions et export. Chaque leçon présente un objectif, des manipulations dans les menus réels, un résultat attendu, un exemple, deux questions et un défi. La validation exige aussi une confirmation personnelle de réalisation de l’atelier. Cette confirmation n’est pas un test automatique du jeu ouvert dans Engine.
+
+La progression des sept parcours existants conserve ses identifiants et ses index. Les durées sont indicatives. Les critères de rédaction et les références 2D/3D sont décrits dans [la méthode de formation](docs/PEDAGOGIE.md).

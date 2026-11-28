@@ -1,6 +1,20 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {createRequire} from 'node:module';import {readFileSync} from 'node:fs';import vm from 'node:vm';const require=createRequire(import.meta.url),M=require('../model.js');const context=vm.createContext({});for(const f of ['courses.js','enrich-courses.js'])vm.runInContext(readFileSync(new URL('../'+f,import.meta.url),'utf8'),context);const courses=JSON.parse(JSON.stringify(context.WarLikeCourses));
-test('seven complete courses expose 21 distinct lessons and valid quizzes',()=>{assert.equal(courses.length,7);assert.equal(courses.reduce((n,c)=>n+c.lessons.length,0),21);for(const c of courses)for(const l of c.lessons){assert.ok(l.content&&l.example&&l.explanation&&l.task);assert.ok(l.options[l.correct]);assert.ok(l.practice.options[l.practice.correct]);assert.notEqual(l.q,l.practice.q)}});
+import test from 'node:test';import assert from 'node:assert/strict';import {createRequire} from 'node:module';import {readFileSync} from 'node:fs';import vm from 'node:vm';const require=createRequire(import.meta.url),M=require('../model.js');const context=vm.createContext({});for(const f of ['courses.js','enrich-courses.js','game-development-course.js'])vm.runInContext(readFileSync(new URL('../'+f,import.meta.url),'utf8'),context);const courses=JSON.parse(JSON.stringify(context.WarLikeCourses));
+test('eight courses expose 27 lessons while preserving the initial paths',()=>{assert.equal(courses.length,8);assert.equal(courses.reduce((n,c)=>n+c.lessons.length,0),27);for(const c of courses)for(const l of c.lessons){assert.ok(l.content&&l.example&&l.explanation&&l.task);assert.ok(l.options[l.correct]);assert.ok(l.practice.options[l.practice.correct]);assert.notEqual(l.q,l.practice.q)}});
 test('legacy progress remains valid and resume finds the first unfinished lesson',()=>{const s=M.normalize({web:{0:true,1:false}},courses);assert.equal(M.done(s,courses[0]),1);assert.equal(M.resume(s,courses[0]),1);s.progress.web[1]=true;s.progress.web[2]=true;assert.equal(M.resume(s,courses[0]),0)});
 test('last lesson survives JSON backup restoration',()=>{const s=M.normalize({version:2,progress:{'premiers-pas':{0:true}},last:{course:'premiers-pas',step:1}},courses);assert.deepEqual(M.normalize(JSON.parse(JSON.stringify(s)),courses),s)});
 test('unknown lessons and malformed imports cannot inflate completion',()=>{for(const raw of [{web:{99:true}},{web:{0:'true'}},{fake:{0:true}},{version:2,progress:{},last:{course:'web',step:9}},[]])assert.throws(()=>M.normalize(raw,courses))});
 test('both knowledge and practice answers are needed, no missing answer counts',()=>{const l=courses[0].lessons[0];assert.equal(M.answer(l,l.correct,l.practice.correct),true);assert.equal(M.answer(l,l.correct,null),false);assert.equal(M.answer(l,-1,l.practice.correct),false)});
+
+
+test('game workshop requires both answers and a separate hands-on confirmation',()=>{
+ const course=courses.find(c=>c.id==='engine-premier-jeu');assert.equal(course.lessons.length,6);
+ for(const lesson of course.lessons){
+  assert(lesson.goal&&lesson.expected&&lesson.steps.length>=3);
+  assert.equal(M.answer(lesson,lesson.correct,lesson.practice.correct),false);
+  assert.equal(M.answer(lesson,lesson.correct,lesson.practice.correct,false),false);
+  assert.equal(M.answer(lesson,lesson.correct,lesson.practice.correct,true),true);
+  assert.equal(M.answer(lesson,-1,lesson.practice.correct,true),false);
+ }
+ const state=M.normalize({version:2,progress:{web:{0:true},unity:{2:true},'engine-premier-jeu':{0:true}},last:{course:'engine-premier-jeu',step:1}},courses);
+ assert.equal(state.progress.web[0],true);assert.equal(state.progress.unity[2],true);assert.deepEqual(M.normalize(JSON.parse(JSON.stringify(state)),courses),state);
+});
